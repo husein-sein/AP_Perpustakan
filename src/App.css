@@ -1,0 +1,4 @@
+/* Purging default Vite styles as we use index.css for the design system */
+#root {
+  width: 100%;
+}

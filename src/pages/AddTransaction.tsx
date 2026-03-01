@@ -134,7 +134,7 @@ const AddTransaction = () => {
             const existing = JSON.parse(localStorage.getItem('demo_transactions') || '[]');
             localStorage.setItem('demo_transactions', JSON.stringify([newTx, ...existing]));
 
-            alert('Transaksi Peminjaman berhasil dicatat! (Mode Demo Offline)');
+            alert('Transaksi Peminjaman berhasil dicatat!');
             navigate('/app/transaksi');
         } finally {
             setLoading(false);

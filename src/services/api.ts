@@ -21,6 +21,8 @@ export const createBook = (data: FormData) => api.post('/books', data, {
     headers: { 'Content-Type': 'multipart/form-data' }
 });
 
+export const getStats = () => api.get('/stats');
+
 export const getBorrowers = () => api.get('/borrowers');
 export const getTransactions = () => api.get('/transactions');
 export const createTransaction = (data: any) => api.post('/transactions', data);

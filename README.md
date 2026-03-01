@@ -46,6 +46,37 @@ User dapat melihat katalog buku yang tersedia dan melihat riwayat peminjaman mer
 
 ---
 
+## 📦 Dependencies yang Terinstal
+
+Berikut adalah daftar perintah `npm install` yang telah digunakan untuk menginstal library dalam proyek ini:
+
+### 1. Frontend (Root)
+Instalasi library utama:
+```bash
+npm install axios lucide-react react-router-dom
+```
+Instalasi tools development:
+```bash
+npm install -D vite @vitejs/plugin-react typescript eslint @types/react @types/react-dom @types/node
+```
+
+### 2. Backend (Folder `server`)
+Instalasi framework & database:
+```bash
+cd server
+npm install express mysql2 cors dotenv
+```
+Instalasi auth & file upload:
+```bash
+npm install jsonwebtoken bcryptjs multer
+```
+Instalasi tools development:
+```bash
+npm install -D nodemon
+```
+
+---
+
 ## ⚙️ Cara Menjalankan Project
 
 ### 1. Persiapan Backend

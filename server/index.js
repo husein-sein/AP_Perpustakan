@@ -14,10 +14,11 @@ app.use(express.json());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 const db = mysql.createConnection({
-    host: process.env.DB_HOST || 'localhost',
+    host: process.env.DB_HOST || '127.0.0.1',
     user: process.env.DB_USER || 'root',
     password: process.env.DB_PASSWORD || '',
-    database: process.env.DB_NAME || 'library_db'
+    database: process.env.DB_NAME || 'library_db',
+    multipleStatements: true
 });
 
 db.connect((err) => {
@@ -123,6 +124,27 @@ app.put('/api/transactions/:id/return', (req, res) => {
     db.query(q, [return_date, req.params.id], (err, result) => {
         if (err) return res.status(500).json(err);
         res.json({ message: 'Book returned' });
+    });
+});
+
+// --- STATS ---
+app.get('/api/stats', (req, res) => {
+    const q = `
+        SELECT COUNT(*) as total_books FROM books;
+        SELECT COUNT(*) as borrowed_books FROM transactions WHERE status = 'Dipinjam';
+        SELECT COUNT(*) as late_returns FROM transactions WHERE status = 'Dipinjam' AND due_date < CURDATE();
+    `;
+
+    db.query(q, (err, results) => {
+        if (err) {
+            console.error('Stats query error:', err);
+            return res.status(500).json({ error: 'Failed to fetch stats' });
+        }
+        res.json({
+            total_books: results[0][0].total_books,
+            borrowed_books: results[1][0].borrowed_books,
+            late_returns: results[2][0].late_returns
+        });
     });
 });
 

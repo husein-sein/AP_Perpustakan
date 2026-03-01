@@ -58,6 +58,15 @@ const Home = () => {
         return matchesSearch && matchesGenre;
     });
 
+    const featuredBook = books[0] || {
+        id: 1,
+        title: 'Laskar Pelangi',
+        author: 'Andrea Hirata',
+        category: 'Fiksi',
+        stock: 5,
+        cover_image: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?q=80&w=1000'
+    };
+
     return (
         <div style={{ paddingBottom: '2rem' }}>
             {/* Featured Recommendation */}
@@ -78,14 +87,16 @@ const Home = () => {
                         <Star size={16} fill="#fbbf24" />
                         <span style={{ fontSize: '0.875rem', fontWeight: 600, textTransform: 'uppercase' }}>Rekomendasi Minggu Ini</span>
                     </div>
-                    <h2 style={{ fontSize: '2.5rem', fontWeight: 800, lineHeight: 1.1, marginBottom: '1rem' }}>Laskar Pelangi</h2>
+                    <h2 style={{ fontSize: '2.5rem', fontWeight: 800, lineHeight: 1.1, marginBottom: '1rem', color: 'white' }}>{featuredBook.title}</h2>
                     <p style={{ fontSize: '1.125rem', opacity: 0.8, marginBottom: '2rem', lineHeight: 1.6 }}>
-                        Kisah perjuangan sepuluh anak di Belitung demi mendapatkan pendidikan yang layak.
+                        {featuredBook.title === 'Laskar Pelangi'
+                            ? 'Kisah perjuangan sepuluh anak di Belitung demi mendapatkan pendidikan yang layak.'
+                            : `Karya terbaik dari ${featuredBook.author} dalam kategori ${featuredBook.category}.`}
                     </p>
                     <button
                         className="btn"
                         style={{ background: '#2563eb', color: 'white', fontWeight: 600, padding: '0.875rem 2rem' }}
-                        onClick={() => navigate('/app/transaksi/baru', { state: { bookId: 1, bookTitle: 'Laskar Pelangi', bookCover: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?q=80&w=1000' } })}
+                        onClick={() => navigate('/app/transaksi/baru', { state: { bookId: featuredBook.id, bookTitle: featuredBook.title, bookCover: featuredBook.cover_image } })}
                     >
                         Pinjam Sekarang
                     </button>
@@ -100,9 +111,9 @@ const Home = () => {
                     zIndex: 1
                 }}>
                     <img
-                        src={getImageUrl('https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?q=80&w=1000&auto=format&fit=crop')}
+                        src={getImageUrl(featuredBook.cover_image)}
                         style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                        alt="Laskar Pelangi"
+                        alt={featuredBook.title}
                         onError={(e: any) => e.target.src = 'https://images.unsplash.com/photo-1543004218-ee141d055c5e?q=80&w=300'}
                     />
                 </div>

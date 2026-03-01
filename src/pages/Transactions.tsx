@@ -46,6 +46,24 @@ const Transactions = () => {
     }, []);
 
     const handleReturn = async (id: number) => {
+        // Cek apakah ini transaksi demo lokal (offline)
+        const demoTransactions = JSON.parse(localStorage.getItem('demo_transactions') || '[]');
+        const isDemo = demoTransactions.some((t: any) => t.id === id);
+
+        if (isDemo) {
+            // Update status di localStorage untuk mode demo
+            const updatedDemo = demoTransactions.map((t: any) =>
+                t.id === id ? { ...t, status: 'Dikembalikan', return_date: new Date().toISOString().split('T')[0] } : t
+            );
+            localStorage.setItem('demo_transactions', JSON.stringify(updatedDemo));
+
+            setTransactions(prev => prev.map(t =>
+                t.id === id ? { ...t, status: 'Dikembalikan' } : t
+            ));
+            alert('Buku berhasil dikembalikan!');
+            return;
+        }
+
         try {
             await returnBook(id);
             setTransactions(prev => prev.map(t =>
@@ -54,7 +72,7 @@ const Transactions = () => {
             alert('Buku berhasil dikembalikan!');
         } catch (error) {
             console.error("Failed to return book", error);
-            alert('Gagal mengembalikan buku. Silakan coba lagi.');
+            alert('Gagal mengembalikan buku. Pastikan server backend berjalan.');
         }
     };
 
